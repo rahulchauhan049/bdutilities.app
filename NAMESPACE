@@ -3,7 +3,6 @@
 export(mod_add_data_server)
 export(mod_add_data_ui)
 import(DT)
-import(bdDwC)
 import(leaflet)
 importFrom(data.table,fread)
 importFrom(finch,dwca_read)
