@@ -164,7 +164,7 @@ mod_add_data_ui <- function(id, label = "Add Occurrence Data"){
 #' @importFrom finch dwca_read 
 #' @importFrom data.table fread
 #' @importFrom shinyjs runjs
-#' @import bdDwC DT leaflet
+#' @import DT leaflet
 mod_add_data_server <- function(input, output, session, next_button_id = "dataToConfigureDiv"){
     ns <- session$ns
     
@@ -298,13 +298,7 @@ mod_add_data_server <- function(input, output, session, next_button_id = "dataTo
         shinyjs::runjs(code = paste('$("#', next_button_id, '").addClass("completedButton");', sep = ""))
         shinyjs::runjs(code = paste('$("#', next_button_id, '").removeClass("activeButton");', sep = ""))
         
-        
         showNotification("Read Data Successfully", duration = 2)
-        
-        
-        # --------- Setting flag tab statistic boxes -------
-        # TODO
-        
     }
     
     returnDataReact <- reactive({
