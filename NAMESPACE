@@ -2,6 +2,8 @@
 
 export(mod_add_data_server)
 export(mod_add_data_ui)
+export(mod_citation_server)
+export(mod_citation_ui)
 import(DT)
 import(leaflet)
 importFrom(data.table,fread)
