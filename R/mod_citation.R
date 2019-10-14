@@ -23,9 +23,9 @@ mod_citation_ui <- function(id, package){
                     ns("citation_level"),
                     label = h3("Citation Level"),
                     choices = list(
-                      "Core - Citation for just base R and bddwc.app" = 1,
-                      "Dependency - Citations for packages used by bddwc.app directly" = 2,
-                      "Full - Citations for every single package bddwc.app depends on directly and indirectly" = 3
+                      "Core - Citation for just base R and this package" = 1,
+                      "Dependency - Citations for packages used by this package directly" = 2,
+                      "Full - Citations for every single package this package depends on directly and indirectly" = 3
                     ),
                     selected = 1
                   ),
