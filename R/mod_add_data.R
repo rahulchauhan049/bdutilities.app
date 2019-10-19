@@ -169,6 +169,7 @@ mod_add_data_server <- function(input, output, session, next_button_id = "dataTo
     ns <- session$ns
     
     returnData <- data.frame()
+    mapData <- data.frame()
     map <- leafletProxy(ns("mymap"))
     
     # ----------------
@@ -188,6 +189,7 @@ mod_add_data_server <- function(input, output, session, next_button_id = "dataTo
                         )
                     )
                 returnData <<- data$data
+                mapData <<- returnData
                 
             } else {
                 warnings <- capture.output(
@@ -213,10 +215,11 @@ mod_add_data_server <- function(input, output, session, next_button_id = "dataTo
                 
                 tempData <- data[[input$queryDB]]$data[[1]]
                 returnData <<- tempData
+                mapData <<- returnData
             }
         })
         
-        dataLoadedTask(returnData)
+        dataLoadedTask()
     })
     
     observeEvent(input$inputFile, {
@@ -230,13 +233,15 @@ mod_add_data_server <- function(input, output, session, next_button_id = "dataTo
                 finchRead <-
                     finch::dwca_read(input$inputFile$datapath, read = T)
                 returnData <<- finchRead$data[[1]]
+                mapData <<- returnData
                 
             } else {
                 returnData <<-
                     data.table::fread(input$inputFile$datapath)
+                mapData <<- returnData
             }
         })
-        dataLoadedTask(returnData)
+        dataLoadedTask()
         
         
     })
@@ -246,7 +251,7 @@ mod_add_data_server <- function(input, output, session, next_button_id = "dataTo
         if (length(returnData) == 0) {
             return(NULL)
         }
-        leafletProxy(ns("mymap"), data = returnData) %>%
+        leafletProxy(ns("mymap"), data = mapData) %>%
             clearShapes() %>%
             addCircles(~ decimalLongitude, ~ decimalLatitude, color = input$mapColor)
     })
@@ -255,7 +260,7 @@ mod_add_data_server <- function(input, output, session, next_button_id = "dataTo
         if (length(returnData) == 0) {
             return(NULL)
         }
-        leafletProxy(ns("mymap"), data = returnData) %>%
+        leafletProxy(ns("mymap"), data = mapData) %>%
             clearShapes() %>%
             addCircles(~ decimalLongitude, ~ decimalLatitude, color = input$mapColor)
     })
@@ -266,28 +271,36 @@ mod_add_data_server <- function(input, output, session, next_button_id = "dataTo
             setView(0, 0, zoom = 2)
     })
     
-    dataLoadedTask <- function(data) {
-        if (length(data) == 0) {
+    dataLoadedTask <- function() {
+        mapData <<- as.data.frame(mapData)
+        if (length(mapData) == 0) {
             showNotification("Empty data returned! Try different setting.",
                              duration = 2)
             return()
         }
         
-        if ("decimalLatitude" %in% colnames(returnData)) {
-            returnData$decimalLatitude <<-
-                as.numeric(returnData$decimalLatitude)
-            returnData$decimalLongitude <<-
-                as.numeric(returnData$decimalLongitude)
+        if ("decimallatitude" %in% tolower(colnames(mapData))) {
+            mapData$decimalLatitude <<-
+                as.numeric(mapData[, which(tolower(colnames(mapData)) == "decimallatitude")])
+            mapData$decimalLongitude <<-
+                as.numeric(mapData[, which(tolower(colnames(mapData)) == "decimallongitude")])
+        } else if ("latitude" %in% tolower(colnames(mapData))) {
+            mapData$decimalLatitude <<-
+                as.numeric(mapData[, which(tolower(colnames(mapData)) == "latitude")])
+            mapData$decimalLongitude <<-
+                as.numeric(mapData[, which(tolower(colnames(mapData)) == "longitude")])
+        } else {
+            return()
         }
         
         # ------------ End of Darwinizing Data -------------
         
-        try(leafletProxy(ns("mymap"), data = returnData) %>%
+        try(leafletProxy(ns("mymap"), data = mapData) %>%
                 clearShapes() %>%
                 addCircles(~ decimalLongitude, ~ decimalLatitude, color = input$mapColor))
         
         output$inputDataTable <- DT::renderDataTable(DT::datatable({
-            summarizeDataframe(returnData)
+            summarizeDataframe(mapData)
         }, options = list(scrollX = TRUE)))
         
         

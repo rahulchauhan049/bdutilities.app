@@ -42,7 +42,7 @@ mod_citation_ui <- function(id, package){
 #' @rdname mod_citation
 #' @export
 #' @keywords internal
-    
+#' @import knitr gtools 
 mod_citation_server <- function(input, output, session, package){
   ns <- session$ns
   
@@ -88,7 +88,7 @@ mod_citation_server <- function(input, output, session, package){
         cont <- c("base", package, rev(gtools::getDependencies(package)))
       }
       
-      write_bib(cont, con)
+      knitr::write_bib(cont, con)
     }
   )
 }
