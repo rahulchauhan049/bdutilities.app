@@ -1,8 +1,8 @@
 Package: bdutilities.app
 Title: Reusable Supporting UI Functions Across the bdverse.
-Version: 0.0.2
+Version: 0.0.3
 License: GPL-3
-Date: 2019-09-30
+Date: 2019-10-19
 Authors@R: c(
     person(
         "Thiloshon", "Nagarajah",
