@@ -272,6 +272,7 @@ mod_add_data_server <- function(input, output, session, next_button_id = "dataTo
     })
     
     dataLoadedTask <- function() {
+        mapData <<- as.data.frame(mapData)
         if (length(mapData) == 0) {
             showNotification("Empty data returned! Try different setting.",
                              duration = 2)
@@ -280,14 +281,14 @@ mod_add_data_server <- function(input, output, session, next_button_id = "dataTo
         
         if ("decimallatitude" %in% tolower(colnames(mapData))) {
             mapData$decimalLatitude <<-
-                as.numeric(returnData[, which(tolower(colnames(mapData)) == "decimallatitude")])
+                as.numeric(mapData[, which(tolower(colnames(mapData)) == "decimallatitude")])
             mapData$decimalLongitude <<-
-                as.numeric(returnData[, which(tolower(colnames(mapData)) == "decimallongitude")])
+                as.numeric(mapData[, which(tolower(colnames(mapData)) == "decimallongitude")])
         } else if ("latitude" %in% tolower(colnames(mapData))) {
             mapData$decimalLatitude <<-
-                as.numeric(returnData[, which(tolower(colnames(mapData)) == "latitude")])
+                as.numeric(mapData[, which(tolower(colnames(mapData)) == "latitude")])
             mapData$decimalLongitude <<-
-                as.numeric(returnData[, which(tolower(colnames(mapData)) == "longitude")])
+                as.numeric(mapData[, which(tolower(colnames(mapData)) == "longitude")])
         } else {
             return()
         }
