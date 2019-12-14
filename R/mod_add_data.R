@@ -227,6 +227,8 @@ mod_add_data_server <- function(input, output, session, next_button_id = "dataTo
     observeEvent(input$inputFile, {
         withProgress(message = paste("Reading", input$inputFile$name, "..."), {
             
+            print(input$inputFile$type)
+            
             if (is.null(input$inputFile))
                 return("No data to view")
             
