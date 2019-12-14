@@ -88,13 +88,15 @@ mod_add_data_ui <- function(id, label = "Add Occurrence Data"){
                             class = "activeButton",
                             fileInput(
                                 ns("inputFile"),
-                                label = h3("CSV / DWCA ZIP file input"),
+                                label = h3("CSV / DWCA ZIP / R RDS file input"),
                                 accept = c(
                                     "text/csv",
                                     "text/comma-separated-values,text/plain",
                                     ".csv",
                                     ".zip",
-                                    "application/zip"
+                                    "application/zip",
+                                    ".rds",
+                                    ".RDS"
                                 )
                             )
                         )
@@ -235,15 +237,19 @@ mod_add_data_server <- function(input, output, session, next_button_id = "dataTo
                 returnData <<- finchRead$data[[1]]
                 mapData <<- returnData
                 
-            } else {
+            } else if (grepl("rds", tolower(input$inputFile$type))) {
+                message("Reading RDS...")
+                returnData <<-
+                    readRDS(input$inputFile$datapath)
+                mapData <<- returnData
+            } else  {
+                message("Reading Tabular Data...")
                 returnData <<-
                     data.table::fread(input$inputFile$datapath)
                 mapData <<- returnData
             }
         })
         dataLoadedTask()
-        
-        
     })
     
     

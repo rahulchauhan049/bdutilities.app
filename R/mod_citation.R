@@ -49,9 +49,9 @@ mod_citation_server <- function(input, output, session, package){
   output$citationsUI <- renderUI({
     components <- list()
     components[[1]] <- tagList(h3("R"),
-                               suppressWarnings(format(citation(), style = "text")))
+                               p(suppressWarnings(format(citation(), style = "text"))))
     components[[2]] <- tagList(h3(package),
-                               suppressWarnings(format(citation(package), style = "text")))
+                               p(suppressWarnings(format(citation(package), style = "text"))))
     
     if (input$citation_level == 1) {
       
@@ -61,7 +61,7 @@ mod_citation_server <- function(input, output, session, package){
       
       for (ind in 1:15) {
         components[[ind + 2]] <- tagList(h3(dep[ind]),
-                                         suppressWarnings(format(citation(dep[ind]), style = "text")))
+                                         p(suppressWarnings(format(citation(dep[ind]), style = "text"))))
       }
     } else {
       dep <- gtools::getDependencies(package)
@@ -69,7 +69,7 @@ mod_citation_server <- function(input, output, session, package){
       
       for (ind in 1:length(dep)) {
         components[[ind + 2]] <- tagList(h3(dep[ind]),
-                                         suppressWarnings(format(citation(dep[ind]), style = "text")))
+                                         p(suppressWarnings(format(citation(dep[ind]), style = "text"))))
       }
     }
     return(components)
