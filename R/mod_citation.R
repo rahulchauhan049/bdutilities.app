@@ -56,12 +56,16 @@ mod_citation_server <- function(input, output, session, package){
     if (input$citation_level == 1) {
       
     } else if (input$citation_level == 2) {
+      print("---------DT--------")
       dep <- gtools::getDependencies(package)
       dep <- rev(dep)
       
       for (ind in 1:15) {
         components[[ind + 2]] <- tagList(h3(dep[ind]),
                                          p(suppressWarnings(format(citation(dep[ind]), style = "text"))))
+        
+        print(dep[ind])
+        print(components[[ind + 2]])
       }
     } else {
       dep <- gtools::getDependencies(package)
@@ -73,7 +77,10 @@ mod_citation_server <- function(input, output, session, package){
       }
     }
     
+    print("--------HT---------")
+    
     print(components)
+    print("--------MT---------")
     return(components)
   })
   
