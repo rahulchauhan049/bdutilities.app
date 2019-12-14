@@ -227,8 +227,6 @@ mod_add_data_server <- function(input, output, session, next_button_id = "dataTo
     observeEvent(input$inputFile, {
         withProgress(message = paste("Reading", input$inputFile$name, "..."), {
             
-            print(input$inputFile$name)
-            
             if (is.null(input$inputFile))
                 return("No data to view")
             
@@ -239,7 +237,7 @@ mod_add_data_server <- function(input, output, session, next_button_id = "dataTo
                 returnData <<- finchRead$data[[1]]
                 mapData <<- returnData
                 
-            } else if (grepl("rds", tolower(input$inputFile$name))) {
+            } else if (grepl(".rds", tolower(input$inputFile$name))) {
                 message("Reading RDS...")
                 returnData <<-
                     readRDS(input$inputFile$datapath)
