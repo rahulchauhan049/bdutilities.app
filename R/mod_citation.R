@@ -72,6 +72,8 @@ mod_citation_server <- function(input, output, session, package){
                                          p(suppressWarnings(format(citation(dep[ind]), style = "text"))))
       }
     }
+    
+    print(components)
     return(components)
   })
   
