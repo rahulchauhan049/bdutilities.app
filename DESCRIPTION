@@ -1,9 +1,9 @@
 Package: bdutilities.app
 Title: Reusable Supporting UI Functions Across the bdverse
-Version: 0.0.4
+Version: 0.0.5
 Description: Shared Shiny modules across the bdverse apps.
 License: GPL-3
-Date: 2019-12-14
+Date: 2019-12-28
 Authors@R: c(
     person(
         "Thiloshon", "Nagarajah",
@@ -17,7 +17,7 @@ Authors@R: c(
 Maintainer: Thiloshon Nagarajah <thiloshon@gmail.com>
 URL: https://github.com/bd-R/bdutilities.app, https://bd-r.github.io/The-bdverse/index.html
 BugReports: https://github.com/bd-R/bdutilities.app/issues
-Imports: shiny, shinydashboard, shinyjs, leaflet, DT, data.table, rgbif, spocc, finch, yaml
+Imports: shiny, shinydashboard, shinyjs, leaflet, DT, data.table, rgbif, spocc, finch, yaml, gtools, knitr
 Depends: R (>= 2.10)
 LazyData: true
 Encoding: UTF-8
