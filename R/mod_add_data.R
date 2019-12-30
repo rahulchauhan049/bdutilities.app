@@ -166,6 +166,7 @@ mod_add_data_ui <- function(id, label = "Add Occurrence Data"){
 #' @importFrom finch dwca_read 
 #' @importFrom data.table fread
 #' @importFrom shinyjs runjs
+#' @importFrom bdutilities summarizeDataframe
 #' @import DT leaflet
 mod_add_data_server <- function(input, output, session, next_button_id = "dataToConfigureDiv"){
     ns <- session$ns
@@ -306,7 +307,7 @@ mod_add_data_server <- function(input, output, session, next_button_id = "dataTo
                 addCircles(~ decimalLongitude, ~ decimalLatitude, color = input$mapColor))
         
         output$inputDataTable <- DT::renderDataTable(DT::datatable({
-            summarizeDataframe(mapData)
+            bdutilities::summarizeDataframe(mapData)
         }, options = list(scrollX = TRUE)))
         
         
