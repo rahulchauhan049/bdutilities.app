@@ -88,7 +88,7 @@ mod_add_data_ui <- function(id, label = "Add Occurrence Data"){
                             class = "activeButton",
                             fileInput(
                                 ns("inputFile"),
-                                label = h3("CSV / DWCA ZIP / R RDS file input"),
+                                label = h3("CSV / DWCA ZIP / R RDS / RDA File Input"),
                                 accept = c(
                                     "text/csv",
                                     "text/comma-separated-values,text/plain",
@@ -96,7 +96,9 @@ mod_add_data_ui <- function(id, label = "Add Occurrence Data"){
                                     ".zip",
                                     "application/zip",
                                     ".rds",
-                                    ".RDS"
+                                    ".RDS",
+                                    ".rda",
+                                    ".RDA"
                                 )
                             )
                         )
@@ -243,6 +245,18 @@ mod_add_data_server <- function(input, output, session, next_button_id = "dataTo
                 returnData <<-
                     readRDS(input$inputFile$datapath)
                 mapData <<- returnData
+            } else if (grepl(".rda", tolower(input$inputFile$name))) {
+                message("Reading RDA...")
+                fileName <- input$inputFile$datapath
+                load(fileName)
+                temp <- get(ls()[ls() != "fileName"])
+                if (class(temp)[1] %in% c("data.frame", "tbl_df", "df", "data.table")) {
+                    returnData <<- temp
+                    mapData <<- returnData
+                } else{
+                    showNotification("RDA file should contain only one dataframe object")
+                    return()
+                }
             } else  {
                 message("Reading Tabular Data...")
                 returnData <<-
