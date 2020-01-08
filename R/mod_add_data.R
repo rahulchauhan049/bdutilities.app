@@ -250,7 +250,6 @@ mod_add_data_server <- function(input, output, session, next_button_id = "dataTo
                 fileName <- input$inputFile$datapath
                 load(fileName)
                 temp <- get(ls()[ls() != "fileName"])
-                print(class(temp))
                 if (class(temp)[1] %in% c("data.frame", "tbl_df", "df", "data.table")) {
                     returnData <<- temp
                     mapData <<- returnData
