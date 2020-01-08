@@ -249,9 +249,14 @@ mod_add_data_server <- function(input, output, session, next_button_id = "dataTo
                 message("Reading RDA...")
                 fileName <- input$inputFile$datapath
                 load(fileName)
-                returnData <<-
-                    get(ls()[ls() != "fileName"])
-                mapData <<- returnData
+                temp <- get(ls()[ls() != "fileName"])
+                if (class(temp)[1] %in% c("data.frame", "tbl_df", "df", "data.table")) {
+                    returnData <<- temp
+                    mapData <<- returnData
+                } else{
+                    showNotification("RDA file should contain only one dataframe object")
+                    return()
+                }
             } else  {
                 message("Reading Tabular Data...")
                 returnData <<-
