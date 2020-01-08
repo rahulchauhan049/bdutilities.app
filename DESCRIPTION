@@ -3,7 +3,7 @@ Title: Reusable Supporting UI Functions Across the bdverse
 Version: 0.1.0
 Description: Shared Shiny modules across the bdverse apps.
 License: GPL-3
-Date: 2020-1-7
+Date: 2020-1-8
 Authors@R: c(
     person(
         "Thiloshon", "Nagarajah",
