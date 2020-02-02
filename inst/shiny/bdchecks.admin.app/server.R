@@ -1,4 +1,5 @@
 library(shiny)
+library(shinyjs)
 
 shinyServer(function(input, output) {
     checks <-
@@ -30,18 +31,43 @@ shinyServer(function(input, output) {
     output$tab <- renderUI({
         tabs <- list()
         
-        for (i in 1:length(checks)) {
-            meta <- unlist(checks[[i]])
-            meta_input_fields <- list()
-            
-            test <- unlist(tests[checks[[i]]$name])
-            
-            for (j in 1:length(meta)) {
-                meta_input_fields[[j]] <-
-                    textInput("test",
-                              label = names(meta[j]),
-                              value = meta[[j]])
+        
+        create_layer <- function(listElems, prefix){
+            n <- names(listElems)
+            elem_placeholder <- list()
+            for (index in 1 : length(listElems)) {
+                if (length(listElems[[index]]) > 1){
+                    create_layer(listElems[[index]], paste0(prefix, "$", n[[index]]))
+                } else {
+                    id <- paste0(prefix, "$", n[[index]])
+                    print()
+                    elem_placeholder[[length(elem_placeholder) + 1]] <-
+                        textInput(id,
+                                  label = "dsaf",
+                                  value = checks[[id]]
+                        )
+                }
             }
+            
+            return(elem_placeholder)
+        }
+        
+        names <- names(checks)
+        for (i in 1:length(checks)) {
+            print("----")
+            meta_input_fields <- create_layer(checks[[i]], paste0("`", names[[i]],"`"))
+            
+            # meta <- unlist(checks[[i]])
+            # 
+            # 
+            # test <- unlist(tests[checks[[i]]$name])
+            # 
+            # for (j in 1:length(meta)) {
+            #     meta_input_fields[[j]] <-
+            #         textInput("test",
+            #                   label = names(meta[j]),
+            #                   value = meta[[j]])
+            # }
             
             tabs[[i]] <-
                 tabItem(checks[[i]]$name,
