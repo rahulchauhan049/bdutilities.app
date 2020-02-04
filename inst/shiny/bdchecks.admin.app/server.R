@@ -1,14 +1,20 @@
 library(shiny)
 library(shinyjs)
 
-shinyServer(function(input, output) {
+shinyServer(function(input, output, session) {
+    path <- paste0(getwd(), "/yamls/data_check_edited.yaml")
+    
+    if(file.exists(path)) {
+        url <- path
+    } else {
+        url <- paste0(getwd(), "/yamls/data_check.yaml")
+    }
+    
     checks <-
-        read_yaml(
-            "/Users/thiloshonnagarajah/RProjects/bdchecks/inst/extdata/data_check.yaml"
-        )
+        read_yaml(url)
     
     tests <-
-        read_yaml("/Users/thiloshonnagarajah/RProjects/bdchecks/inst/extdata/data_test.yaml")
+        read_yaml(system.file("extdata", 'data_test.yaml', package = "bdchecks"))
     
     r_loc <- "~/RProjects/bdchecks/R"
     
@@ -44,11 +50,7 @@ shinyServer(function(input, output) {
                     elem_placeholder[[length(elem_placeholder) + 1]] <<- hr()
                     
                 } else {
-                    # print("8888")
-                    # print(listElems)
-                    # print("8888")
                     id <- paste0(prefix, "$", n[[index]])
-                    #print(id)
                     elem_placeholder[[length(elem_placeholder) + 1]] <<-
                         textInput(id,
                                   label = names(listElems)[[index]],
@@ -57,9 +59,6 @@ shinyServer(function(input, output) {
                 }
             }
             
-           
-            
-            #print(elem_placeholder)
             return(elem_placeholder)
         }
         
@@ -97,9 +96,7 @@ shinyServer(function(input, output) {
                                             12,
                                             div(class = "secondaryHeaders", h3("Edit Meta Data")),
                                             
-                                            tagList(meta_input_fields),
-                                            
-                                            actionButton("saveMeta", "Save Meta")
+                                            tagList(meta_input_fields)
                                         )
                                     ),
                                     
@@ -142,12 +139,49 @@ shinyServer(function(input, output) {
                 )
             ),
             useShinyjs(),
-            tags$div(tagList(tabs), class = "tab-content")
+            fluidRow(column(12,
+                            column(6,
+                                   tags$div(tagList(tabs), class = "tab-content")),
+                            column(6,
+                                   div(
+                                       id = "yaml",
+                                       fluidRow(
+                                           textAreaInput(
+                                               "yaml",
+                                               label = "YAML File",
+                                               value = paste(as.yaml(checks), collapse = "\n")
+                                           )
+                                       )
+                                   ))
+                            )
+                     )
         ))
     })
     
-    observeEvent(input$saveMeta, {
-        print(reactiveValuesToList(input))
+    output$textWithNewlines <- renderUI({
+        rawText <- readLines(paste0(getwd(), "/yamls/data_check_edited.yaml"))
+        
+        print(rawText)
+        splitText <- stringi::stri_split(str = rawText, regex = '\\n')
+        
+        # wrap a paragraph tag around each element in the list
+        replacedText <- lapply(splitText, p)
+        
+        return(replacedText)
+    })
+    
+    observe({
+        elems <- reactiveValuesToList(input)
+        
+        for (index in 1:length(elems)) {
+            name <- names(elems[index])
+            if(!is.null(name) && nchar(elems[[index]]) > 0 && grepl("`DC_", name)){
+                eval(parse(text=paste0("checks$", name, " <<-", "'", elems[index], "'")))
+            }
+        }
+        
+        updateTextAreaInput(session, "yaml", value = paste(as.yaml(checks), collapse = "\n"))
+        write_yaml(checks, paste0(getwd(), "/yamls/data_check_edited.yaml"))
     })
     
 })
