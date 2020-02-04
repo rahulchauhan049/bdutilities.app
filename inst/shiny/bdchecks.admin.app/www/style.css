@@ -25,6 +25,16 @@ textarea {
   min-width: 600px;
 }
 
+#yaml textarea {
+  min-height: 800px;
+  background: lightslategray;
+    color: darkblue;
+}
+
 .form-control { 
-  width: 800px;
+  width: 150%;
+}
+
+hr {
+  border-top: 1px solid black;
 }
