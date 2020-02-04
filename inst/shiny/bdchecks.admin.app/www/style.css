@@ -28,3 +28,7 @@ textarea {
 .form-control { 
   width: 800px;
 }
+
+hr {
+  border-top: 1px solid black;
+}

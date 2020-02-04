@@ -30,41 +30,52 @@ shinyServer(function(input, output) {
     
     output$tab <- renderUI({
         tabs <- list()
-        
+        elem_placeholder <- list()
         
         create_layer <- function(listElems, prefix){
+           
             n <- names(listElems)
-            elem_placeholder <- list()
+            
             for (index in 1 : length(listElems)) {
-                if (length(listElems[[index]]) > 1){
+                if (class(listElems[[index]]) == "list"){
+                    
+                    elem_placeholder[[length(elem_placeholder) + 1]] <<- h3(names(listElems)[[index]])
                     create_layer(listElems[[index]], paste0(prefix, "$", n[[index]]))
+                    elem_placeholder[[length(elem_placeholder) + 1]] <<- hr()
+                    
                 } else {
+                    # print("8888")
+                    # print(listElems)
+                    # print("8888")
                     id <- paste0(prefix, "$", n[[index]])
-                    print()
-                    elem_placeholder[[length(elem_placeholder) + 1]] <-
+                    #print(id)
+                    elem_placeholder[[length(elem_placeholder) + 1]] <<-
                         textInput(id,
-                                  label = "dsaf",
-                                  value = checks[[id]]
+                                  label = names(listElems)[[index]],
+                                  value = listElems[[index]]
                         )
                 }
             }
             
+           
+            
+            #print(elem_placeholder)
             return(elem_placeholder)
         }
         
         names <- names(checks)
         for (i in 1:length(checks)) {
-            print("----")
+            elem_placeholder <- list()
             meta_input_fields <- create_layer(checks[[i]], paste0("`", names[[i]],"`"))
             
             # meta <- unlist(checks[[i]])
-            # 
-            # 
+            # meta_input_fields <- list()
+
             # test <- unlist(tests[checks[[i]]$name])
-            # 
+
             # for (j in 1:length(meta)) {
             #     meta_input_fields[[j]] <-
-            #         textInput("test",
+            #         textInput(names(meta[j]),
             #                   label = names(meta[j]),
             #                   value = meta[[j]])
             # }
@@ -88,7 +99,7 @@ shinyServer(function(input, output) {
                                             
                                             tagList(meta_input_fields),
                                             
-                                            actionButton("tr", "Save Meta")
+                                            actionButton("saveMeta", "Save Meta")
                                         )
                                     ),
                                     
@@ -108,8 +119,8 @@ shinyServer(function(input, output) {
                                             textAreaInput(
                                                 "rgt",
                                                 label = "R Code",
-                                                value = paste(readLines(
-                                                    paste0(r_loc, "/dc_", checks[[i]]$name, ".R")
+                                                value = paste(suppressWarnings(readLines(
+                                                    paste0(r_loc, "/dc_", checks[[i]]$name, ".R"))
                                                 )
                                                 , collapse = "\n")
                                             ),
@@ -133,6 +144,10 @@ shinyServer(function(input, output) {
             useShinyjs(),
             tags$div(tagList(tabs), class = "tab-content")
         ))
+    })
+    
+    observeEvent(input$saveMeta, {
+        print(reactiveValuesToList(input))
     })
     
 })
