@@ -30,9 +30,11 @@ Imports:
     yaml,
     gtools,
     knitr,
-    bdDwC (>= 0.1.51)
+    bdDwC (>= 0.1.51),
+    bdutilities
 Remotes: 
     bd-R/bdDwC,
+    bd-R/bdutilities
 Depends: R (>= 3.4)
 LazyData: true
 Encoding: UTF-8
