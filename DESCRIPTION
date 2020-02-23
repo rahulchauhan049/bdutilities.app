@@ -30,7 +30,7 @@ Imports:
     yaml,
     gtools,
     knitr,
-    bdDwC (0.1.51)
+    bdDwC (>= 0.1.51)
 Remotes: 
     bd-R/bdDwC,
 Depends: R (>= 3.4)
