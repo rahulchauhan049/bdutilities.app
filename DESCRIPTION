@@ -17,8 +17,23 @@ Authors@R: c(
 Maintainer: Thiloshon Nagarajah <thiloshon@gmail.com>
 URL: https://github.com/bd-R/bdutilities.app, https://bd-r.github.io/The-bdverse/index.html
 BugReports: https://github.com/bd-R/bdutilities.app/issues
-Imports: shiny, shinydashboard, shinyjs, leaflet, DT, data.table, rgbif, spocc, finch, yaml, gtools, knitr
-Depends: R (>= 2.10)
+Imports: 
+    shiny,
+    shinydashboard,
+    shinyjs,
+    leaflet,
+    DT,
+    data.table,
+    rgbif,
+    spocc,
+    finch,
+    yaml,
+    gtools,
+    knitr,
+    bdDwC (0.1.51)
+Remotes: 
+    bd-R/bdDwC,
+Depends: R (>= 3.4)
 LazyData: true
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
