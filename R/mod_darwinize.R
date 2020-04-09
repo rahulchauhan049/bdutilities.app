@@ -60,7 +60,7 @@ mod_darwinize_server <-
       
       showNotification("Cleaning Headers", duration = 4)
       dictionaryPath <-
-        system.file("txts/customDwCdictionary.txt", package = "bdclean")
+        system.file("txts/customDwCdictionary.txt", package = "bdutilities.app")
       customDictionary <-
         data.table::fread(file = dictionaryPath)
       
