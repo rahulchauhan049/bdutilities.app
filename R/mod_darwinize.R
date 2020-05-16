@@ -1,5 +1,3 @@
-# Module UI
-
 #' @title module to add darwinization ability
 #' @description  UI to add darwinization funtion.
 #'
@@ -59,10 +57,6 @@ mod_darwinize_server <-
       returnState <<- data
       
       showNotification("Cleaning Headers", duration = 4)
-      dictionaryPath <-
-        system.file("txts/customDwCdictionary.txt", package = "bdutilities.app")
-      customDictionary <-
-        data.table::fread(file = dictionaryPath)
       
       darwinizer = tryCatch({
         bdDwC::darwinize_names(as.data.frame(data), bdDwC:::data_darwin_cloud$data)

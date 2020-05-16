@@ -33,7 +33,6 @@ mod_citation_ui <- function(id, package){
                   downloadButton(ns("download_bib"), label = "Download Bibtext file for current citation"),
                   
                   uiOutput(ns("citationsUI"))))
-    
   )
 }
     
@@ -93,10 +92,3 @@ mod_citation_server <- function(input, output, session, package){
     }
   )
 }
-    
-## To be copied in the UI
-# mod_citation_ui("citation_ui_1")
-    
-## To be copied in the server
-# callModule(mod_citation_server, "citation_ui_1")
- 

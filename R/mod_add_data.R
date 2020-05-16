@@ -63,12 +63,9 @@ mod_add_data_ui <- function(id, label = "Add Occurrence Data"){
                                 "BISON (Biodiversity Information Serving Our Nation)" = "bison",
                                 "iNaturalist" = "inat",
                                 "ALA (Atlas of Living Australia)" = "ala"
-                                # "OBIS (Ocean Biogeographic Information System)" = "obis",
-                                # "AntWeb" = "antweb"
                             ),
                             selected = "gbif"
                         ),
-                        
                         
                         div(
                             id = ns("queryDatabaseDiv"),
@@ -105,8 +102,6 @@ mod_add_data_ui <- function(id, label = "Add Occurrence Data"){
                     )
                     
                     # ------------- End of Local Disk Module -------------------
-                    
-                    
                 )
             ),
             
