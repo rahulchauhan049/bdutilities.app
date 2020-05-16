@@ -33,7 +33,6 @@ mod_citation_ui <- function(id, package){
                   downloadButton(ns("download_bib"), label = "Download Bibtext file for current citation"),
                   
                   uiOutput(ns("citationsUI"))))
-    
   )
 }
     
@@ -56,7 +55,7 @@ mod_citation_server <- function(input, output, session, package){
     if (input$citation_level == 1) {
       
     } else if (input$citation_level == 2) {
-      dep <- gtools::getDependencies(package)
+      dep <- gtools::getDependencies(package, available = F)
       dep <- rev(dep)
       
       for (ind in 1:15) {
@@ -64,7 +63,7 @@ mod_citation_server <- function(input, output, session, package){
                                          p(suppressWarnings(format(citation(dep[ind]), style = "text")[1])))
       }
     } else {
-      dep <- gtools::getDependencies(package)
+      dep <- gtools::getDependencies(package, available = F)
       dep <- rev(dep)
       
       for (ind in 1:length(dep)) {
@@ -84,19 +83,12 @@ mod_citation_server <- function(input, output, session, package){
       if (input$citation_level == 1) {
         cont <- c("base", package)
       } else if (input$citation_level == 2) {
-        cont <- c("base", package, rev(gtools::getDependencies(package))[1:15])
+        cont <- c("base", package, rev(gtools::getDependencies(package, available = F))[1:15])
       } else {
-        cont <- c("base", package, rev(gtools::getDependencies(package)))
+        cont <- c("base", package, rev(gtools::getDependencies(package, available = F)))
       }
       
       knitr::write_bib(cont, con)
     }
   )
 }
-    
-## To be copied in the UI
-# mod_citation_ui("citation_ui_1")
-    
-## To be copied in the server
-# callModule(mod_citation_server, "citation_ui_1")
- 
