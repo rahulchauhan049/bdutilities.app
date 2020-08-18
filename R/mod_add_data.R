@@ -269,7 +269,17 @@ mod_add_data_server <- function(input, output, session, next_button_id = "dataTo
         }
         leafletProxy(ns("mymap"), data = mapData) %>%
             clearShapes() %>%
-            addCircles(~ decimalLongitude, ~ decimalLatitude, color = input$mapColor)
+            addCircleMarkers(
+                ~ decimalLongitude,
+                ~ decimalLatitude, 
+                color = input$mapColor,
+                radius = 1,
+                weight = 10,
+                opacity = 0.5,
+                fill = TRUE,
+                fillOpacity = 0.2,
+                clusterOptions = markerClusterOptions(disableClusteringAtZoom=3)
+            )
     })
     
     observeEvent(input$mapColor, {
@@ -278,7 +288,17 @@ mod_add_data_server <- function(input, output, session, next_button_id = "dataTo
         }
         leafletProxy(ns("mymap"), data = mapData) %>%
             clearShapes() %>%
-            addCircles(~ decimalLongitude, ~ decimalLatitude, color = input$mapColor)
+            addCircleMarkers(
+                ~ decimalLongitude,
+                ~ decimalLatitude, 
+                color = input$mapColor,
+                radius = 1,
+                weight = 10,
+                opacity = 0.5,
+                fill = TRUE,
+                fillOpacity = 0.2,
+                clusterOptions = markerClusterOptions(disableClusteringAtZoom=3)
+            )
     })
     
     output$mymap <- renderLeaflet({
@@ -313,7 +333,18 @@ mod_add_data_server <- function(input, output, session, next_button_id = "dataTo
         
         try(leafletProxy(ns("mymap"), data = mapData) %>%
                 clearShapes() %>%
-                addCircles(~ decimalLongitude, ~ decimalLatitude, color = input$mapColor))
+                addCircleMarkers(
+                    ~ decimalLongitude,
+                    ~ decimalLatitude, 
+                    color = input$mapColor,
+                    radius = 1,
+                    weight = 10,
+                    opacity = 0.5,
+                    fill = TRUE,
+                    fillOpacity = 0.2,
+                    clusterOptions = markerClusterOptions(disableClusteringAtZoom=3)
+                )
+        )
         
         output$inputDataTable <- DT::renderDataTable(DT::datatable({
             bdutilities::summarizeDataframe(mapData)
